@@ -2,21 +2,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { SignJWT } from "jose";
-import { timingSafeEqual } from "crypto";
 import argon2 from "argon2";
-
-function safeCompare(a: string, b: string): boolean {
-    const bufA = Buffer.from(a);
-
-    const bufB = Buffer.from(b);
-
-    if (bufA.length !== bufB.length) {
-        timingSafeEqual(bufA, bufA);
-        return false;
-    }
-
-    return timingSafeEqual(bufA, bufB);
-}
 
 export async function POST(req: NextRequest) {
     try {
