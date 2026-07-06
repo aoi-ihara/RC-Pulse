@@ -166,7 +166,7 @@ export function Contents({ body, sent_at }: ContentsProps) {
                         </button>
 
                         <div className="opacity-50 pb-8 pt-2 text-xs">
-                            v2.3.0
+                            v2.4.0
                         </div>
                     </div>
                 </main>
