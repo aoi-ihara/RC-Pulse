@@ -1,8 +1,29 @@
 import "./globals.css";
 import localFont from "next/font/local";
-import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import AmplitudeInit from "./components/AmplitudeContextProvider";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "RC Pulse",
+    description: "",
+    openGraph: {
+        title: "RC Pulse",
+        description: "",
+        url: "pulse.vgnz93hs.com",
+        siteName: "RC Pulse",
+    },
+    icons: {
+        icon: [
+            {
+                url: "/favicon.png",
+                sizes: "any",
+                type: "image/png",
+            },
+        ],
+        apple: "/apple-icon.png",
+    },
+};
 
 const lineSeedJp = localFont({
     src: [
@@ -33,26 +54,6 @@ const inter = localFont({
     variable: "--font-inter",
     display: "swap",
 });
-
-export const metadata: Metadata = {
-    title: "RC Pulse",
-    description: "",
-    openGraph: {
-        title: "RC Pulse",
-        description: "",
-        siteName: "vgnz93hs",
-        images: [
-            {
-                url: "/apple-icon.png",
-                width: 180,
-                height: 180,
-                alt: "vgnz93hsのサムネイルの画像",
-            },
-        ],
-        locale: "ja_JP",
-        type: "website",
-    },
-};
 
 export default function RootLayout({
     children,
