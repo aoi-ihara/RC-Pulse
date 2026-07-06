@@ -10,10 +10,29 @@ export async function POST(req: NextRequest) {
 
         const { password, token } = body;
 
+        if (typeof password !== "string" || typeof token !== "string") {
+            return NextResponse.json(
+                { error: "入力内容が正しくありません" },
+                { status: 400 },
+            );
+        }
+
         if (!token) {
             return NextResponse.json(
                 { error: "Turnstileの検証が必要です" },
                 { status: 400 },
+            );
+        }
+
+        const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;
+        const expected = process.env.RC_PULSE_HASHED_PASSWORD;
+        const jwtSecret = process.env.JWT_SECRET;
+
+        if (!turnstileSecret || !expected || !jwtSecret) {
+            console.error("Required authentication environment variables are missing");
+            return NextResponse.json(
+                { error: "サーバー設定エラーが発生しました" },
+                { status: 500 },
             );
         }
 
@@ -25,7 +44,7 @@ export async function POST(req: NextRequest) {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    secret: process.env.TURNSTILE_SECRET_KEY!,
+                    secret: turnstileSecret,
                     response: token,
                 }),
             },
@@ -41,23 +60,19 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        const expected: string = process.env.RC_PULSE_HASHED_PASSWORD!;
-
         const ok = await argon2.verify(expected, password);
 
-        if (!expected || !ok) {
+        if (!ok) {
             return NextResponse.json(
                 { error: "パスワードが一致しませんでした" },
                 { status: 401 },
             );
         }
 
-        console.log(JSON.stringify(process.env.RC_PULSE_HASHED_PASSWORD));
-
         const jwt = await new SignJWT({ role: "admin" })
             .setProtectedHeader({ alg: "HS256" })
             .setExpirationTime("60d")
-            .sign(new TextEncoder().encode(process.env.JWT_SECRET!));
+            .sign(new TextEncoder().encode(jwtSecret));
 
         const res = NextResponse.json({ ok: true });
 
