@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { jwtVerify } from "jose";
 import LoginForm from "./ClientForm";
+import Shell from "@/components/layout/Shell";
 
 const secret = new TextEncoder().encode(process.env.JWT_SECRET!);
 
@@ -32,9 +33,8 @@ export default async function SignInPage() {
     }
 
     return (
-        <div className="justify-center main flex flex-col items-center">
-            <h1 className="title">サインイン</h1>
+        <Shell title="サインイン" className="flex flex-col gap-4">
             <LoginForm />
-        </div>
+        </Shell>
     );
 }
