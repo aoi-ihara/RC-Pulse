@@ -124,7 +124,7 @@ export function Contents({ body, sent_at }: ContentsProps) {
                             ログアウト
                         </Button>
 
-                        <div className="opacity-50 pb-4 text-xs">v2.4.0</div>
+                        <div className="opacity-50 pb-4 text-xs">v2.4.1</div>
                     </div>
                 </main>
             </motion.div>

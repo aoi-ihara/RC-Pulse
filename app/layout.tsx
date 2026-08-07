@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { LINE_Seed_JP, JetBrains_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import AmplitudeInit from "./components/AmplitudeContextProvider";
+import { Metadata } from "next";
 
 const lineSeedJp = LINE_Seed_JP({
     subsets: ["latin"],
