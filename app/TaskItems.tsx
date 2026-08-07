@@ -1,4 +1,4 @@
-import { Icon } from "./Icon";
+import { IconView } from "./Icon";
 
 type Task = {
     date: string;
@@ -25,32 +25,32 @@ export function TaskItems({ tasks }: { tasks: Task[] }) {
                                         item.date != tasks[index - 1].date) &&
                                         item.date}
                                 </span>
-                                <div className="flex-1 min-w-0 wrap-break-word">
+                                <div className="min-w-0 wrap-break-word">
                                     {item.url ? (
                                         <a
                                             target="_blank"
                                             href={item.url}
-                                            className="font-bold flex gap-1 underline active:no-underline"
+                                            className="font-bold flex gap-2 underline active:no-underline"
                                         >
-                                            <Icon
+                                            <IconView
                                                 name={item.heading.slice(0, 1)}
                                             />
                                             {item.heading.slice(1) == "1" ? (
-                                                <Icon name="A" />
+                                                <IconView name="A" />
                                             ) : item.heading.slice(1) == "2" ? (
-                                                <Icon name="B" />
+                                                <IconView name="B" />
                                             ) : null}
                                             {item.title}
                                         </a>
                                     ) : (
-                                        <a className="font-bold flex gap-1">
-                                            <Icon
+                                        <a className="font-bold flex gap-2">
+                                            <IconView
                                                 name={item.heading.slice(0, 1)}
                                             />
                                             {item.heading.slice(1) == "1" ? (
-                                                <Icon name="A" />
+                                                <IconView name="A" />
                                             ) : item.heading.slice(1) == "2" ? (
-                                                <Icon name="B" />
+                                                <IconView name="B" />
                                             ) : null}
                                             {item.title}
                                         </a>

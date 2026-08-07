@@ -1,81 +1,131 @@
 @import "tailwindcss";
 
-:root {
-    --theme-font:
-        var(--font-inter), var(--font-line-seed-jp), -apple-system,
-        BlinkMacSystemFont, "Segoe UI", "Hiragino Kaku Gothic ProN",
-        "Hiragino Sans", Meiryo, sans-serif;
+@theme inline {
+    --font-sans: var(--font-line-seed-jp);
+    --font-mono: var(--jetbrains-mono);
+}
 
-    --color-background: white;
+:root {
+    --color-background: hsl(0, 0%, 100%);
+    --color-foreground: hsl(0, 0%, 0%);
     --color-background-secondary: hsl(0, 0%, 90%);
-    --color-foreground: black;
-    --color-foreground-secondary: hsl(0, 0%, 20%);
-    --color-border: hsla(0, 0%, 0%, 0.25);
-    --color-accent: #ee8800;
+    --color-border: hsl(0, 0%, 0%, 0.25);
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
         --color-background: hsl(0, 0%, 10%);
+        --color-foreground: hsl(0, 0%, 100%);
         --color-background-secondary: hsl(0, 0%, 20%);
-        --color-foreground: #ffffff;
-        --color-foreground-secondary: hsl(0, 0%, 80%);
-        --color-border: hsla(0, 0%, 100%, 0.25);
-        --color-accent: #fca63e;
+        --color-border: hsl(0, 0%, 100%, 0.25);
     }
 }
 
-html {
-    font-family: var(--theme-font);
+body {
+    @apply bg-(--color-background) text-(--color-foreground) font-sans flex flex-col items-center;
 }
 
-body {
-    @apply bg-(--color-background) font-normal text-(--color-foreground) w-full flex justify-center;
-    background-color: var(--color-background);
-    color: var(--color-foreground);
+.test {
+    font-family: var(--font-source-code-pro);
 }
 
 .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
+
 .no-scrollbar::-webkit-scrollbar {
     display: none;
 }
 
-.title {
-    @apply font-semibold w-full text-center text-2xl my-16;
+.gradient-text {
+    background: linear-gradient(
+        90deg,
+        var(--color-border),
+        var(--color-border),
+        var(--color-border),
+        var(--color-border),
+        var(--color-foreground),
+        var(--color-border)
+    );
+
+    background-size: 200%;
+
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    animation: gradientMove 1.5s linear infinite;
 }
 
-p,
-h1,
-h2,
-h3 {
-    @apply cursor-default leading-loose tracking-wider;
-}
-
-p {
-    @apply my-4 text-(--color-foreground-secondary);
-}
-
-.link {
-    @apply font-semibold text-(--color-accent) hover:underline active:no-underline;
-}
-
-.header {
-    @apply font-semibold text-xl mb-8 mt-16 pt-16 w-full border-t border-t-(--color-border);
-}
-
-.main {
-    @apply w-full px-8;
-}
-
-@media (min-width: 896px) {
-    .main {
-        @apply max-w-4xl;
+@keyframes gradientMove {
+    0% {
+        background-position: 200%;
+    }
+    100% {
+        background-position: 0%;
     }
 }
 
-.subheader {
-    @apply font-semibold text-base mb-4 mt-8;
+@keyframes shimmer {
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.loading .gradient-background {
+    background: linear-gradient(
+        270deg,
+        var(--color-background-secondary) 25%,
+        var(--color-border) 50%,
+        var(--color-background-secondary) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite linear;
+}
+
+@keyframes bombBounce {
+    0% {
+        transform: scale(1);
+    }
+    30% {
+        transform: scale(1.6);
+    }
+    60% {
+        transform: scale(0.85);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes wrongAnswer {
+    0% {
+        transform: translateX(-10);
+    }
+    15% {
+        transform: translateX(10);
+    }
+    30% {
+        transform: translateX(-10);
+    }
+    45% {
+        transform: translateX(10);
+    }
+    60% {
+        transform: translateX(-10);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes resultAnimation {
+    0% {
+        transform: scale(0.75);
+        filter: blur(16px);
+        opacity: 0;
+    }
+    100% {
+    }
 }

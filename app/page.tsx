@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { Contents } from "./Contents";
 import { jwtVerify } from "jose";
+import { createAdminClient } from "@/lib/db/server";
 
 const secret = new TextEncoder().encode(process.env.JWT_SECRET!);
 
@@ -26,13 +27,9 @@ async function checkAuth() {
 }
 
 async function DataFetcher() {
-    const supabaseAdmin = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        { auth: { autoRefreshToken: false, persistSession: false } },
-    );
+    const supabase = await createAdminClient();
 
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await supabase
         .from("rc_pulse")
         .select("id, sent_at, body, heading")
         .eq("id", "11111111-1111-1111-1111-111111111100")

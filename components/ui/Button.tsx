@@ -1,0 +1,81 @@
+import React from "react";
+import { IconName } from "./Icon";
+import { Icon } from "./Icon";
+
+type ButtonVariant = "default" | "primary" | "text" | "danger";
+
+type ButtonProps = {
+    children?: React.ReactNode;
+    onClick?: React.MouseEventHandler<HTMLButtonElement>;
+    disabled?: boolean;
+    loading?: boolean;
+    loadingText?: string;
+    className?: string;
+    type?: "button" | "submit" | "reset";
+    variant?: ButtonVariant;
+    padding?: "small" | "middle" | "large";
+    iconName?: IconName;
+    alignment?: "left" | "center";
+};
+
+const baseStyles =
+    "font-bold transition-all duration-200 ease-out cursor-pointer";
+
+const variantStyles = (
+    variant: ButtonVariant,
+    loading: boolean,
+    disabled: boolean,
+) => {
+    return variant === "text"
+        ? `${!loading && "underline"} flex items-center active:no-underline`
+        : variant === "default" || loading
+          ? `w-full bg-(--color-background-secondary) text-(--color-foreground) flex items-center transform ${!(loading || disabled) && "active:scale-95"} transition-all duration-200 ease-out font-bold`
+          : variant === "danger"
+            ? `w-full bg-red-500/25 text-red-500 flex transform ${!(loading || disabled) && "active:scale-95"} transition-all duration-200 ease-out font-bold`
+            : `w-full bg-(--color-foreground) text-(--color-background) flex items-center transform ${!(loading || disabled) && "active:scale-95"} transition-all duration-200 ease-out font-bold`;
+};
+
+export default function Button({
+    children,
+    onClick,
+    disabled = false,
+    loading = false,
+    loadingText = "Loading…",
+    className = "w-fit",
+    type = "button",
+    variant = "default",
+    padding = "middle",
+    iconName,
+    alignment = "center",
+}: ButtonProps) {
+    const currentVariantStyle = variantStyles(variant, loading, disabled);
+    const paddingStyle =
+        variant === "text"
+            ? "gap-1"
+            : padding === "small"
+              ? `rounded-lg ${iconName ? "pl-1.5" : "pl-2"} ${children ? "pr-2" : "pr-1.5"} py-1 gap-1`
+              : padding === "middle"
+                ? `rounded-2xl ${iconName ? "pl-3.5" : "pl-4"} ${children ? "pr-4" : "pr-3.5"} py-3 gap-2`
+                : `rounded-2xl ${iconName ? "pl-4.5" : "pl-5"} ${children ? "pr-5" : "pr-4.5"} py-4 gap-3`;
+
+    return (
+        <div className={`rounded-lg ${className}`}>
+            <button
+                type={type}
+                onClick={onClick}
+                className={`${baseStyles} ${currentVariantStyle} ${paddingStyle} ${disabled && "opacity-50 pointer-events-none"} ${alignment === "left" ? "justify-start" : "justify-center"}`}
+            >
+                {iconName && !loading && <Icon name={iconName} size={24} />}
+                {children && (
+                    <div
+                        className={`transition-all duration-200 ease-out ${
+                            loading ? "gradient-text w-fit" : ""
+                        }`}
+                    >
+                        {loading ? loadingText : children}
+                    </div>
+                )}
+            </button>
+        </div>
+    );
+}

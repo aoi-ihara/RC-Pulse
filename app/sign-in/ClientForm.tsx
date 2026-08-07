@@ -4,6 +4,8 @@ import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Turnstile, TurnstileInstance } from "@marsidev/react-turnstile";
 import * as amplitude from "@amplitude/analytics-browser";
+import Input from "@/components/ui/Input";
+import Button from "@/components/ui/Button";
 
 export default function LoginForm() {
     const [password, setPassword] = useState("");
@@ -60,35 +62,36 @@ export default function LoginForm() {
     };
 
     return (
-        <div className="flex flex-col items-center">
-            <div className="justify-center block items-center text-center">
+        <div className="flex flex-col items-center gap-4">
+            <div className="justify-center flex flex-col gap-4 w-full items-center text-center">
                 <form
                     onSubmit={handleSubmit}
-                    className="w-xs block text-center mb-4 border mx-auto border-(--color-border) rounded-4xl p-4 font-semibold"
+                    className="flex flex-col w-full gap-4"
                 >
-                    <input
-                        className="w-full appearance-none outline-0 text-md p-4 rounded-2xl shadow-[inset_0_0_0_1px_var(--color-border)] focus:shadow-[inset_0_0_0_2px_var(--color-foreground)] transition-all disabled:bg-(--color-background-secondary) duration-200 ease-out font-mono disabled:text-[hsl(0,0%,50%)] mb-4"
-                        type="text"
-                        placeholder="ユーザー名"
+                    <Input
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
+                        font="mono"
+                        label="Room ID"
                         disabled={true}
                     />
-                    <input
-                        className="w-full appearance-none outline-0 text-md p-4 rounded-2xl shadow-[inset_0_0_0_1px_var(--color-border)] focus:shadow-[inset_0_0_0_2px_var(--color-foreground)] transition-all duration-200 ease-out font-mono disabled:text-[hsl(0,0%,50%)] mb-4"
-                        type="password"
-                        placeholder="パスワード"
+                    <Input
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        label="Password"
+                        font="mono"
+                        type="password"
                         disabled={loading}
                     />
-                    <button
+                    <Button
                         type="submit"
-                        disabled={loading || !token}
-                        className={`w-full bg-(--color-foreground) text-md p-3 rounded-2xl text-(--color-background) transform active:scale-95 transition-all duration-200 ease-out disabled:opacity-50 font-semibold`}
+                        loading={loading}
+                        iconName="logIn"
+                        variant="primary"
+                        className="w-full"
                     >
-                        {loading ? "読み込み中…" : "サインイン"}
-                    </button>
+                        サインイン
+                    </Button>
                 </form>
 
                 <Turnstile
@@ -99,28 +102,25 @@ export default function LoginForm() {
                         setToken(null);
                         if (turnstileRef.current) turnstileRef.current.reset();
                     }}
-                    className="mt-6"
                     onError={(error) =>
                         console.error("Turnstile error:", error)
                     }
                 />
 
-                <p
-                    className={`text-md transition-all duration-200 transform ease-out ${
-                        error
-                            ? "opacity-100 scale-100"
-                            : "opacity-0 scale-95 display-none"
-                    }`}
-                >
-                    {error}
-                </p>
+                {error && (
+                    <p
+                        className={`text-md text-red-500 transition-all duration-200 transform ease-out`}
+                    >
+                        {error}
+                    </p>
+                )}
 
                 <p className="text-start">
                     パスワードは、クラスのグループチャットを見てください。
                 </p>
             </div>
 
-            <footer className="border-t border-(--color-border) w-xs pb-8 pt-8 mt-2">
+            <footer className="border-t border-(--color-border) w-full pb-8 pt-8">
                 <nav className="grid gap-8 grid-cols-[repeat(auto-fit,minmax(100px,1fr))] opacity-50">
                     <div className="text-start inline-block">
                         <a className="font-bold text-xs inline-block mb-4">
