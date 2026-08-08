@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { LINE_Seed_JP, JetBrains_Mono } from "next/font/google";
-import { Analytics } from "@vercel/analytics/next";
-import AmplitudeInit from "./components/AmplitudeContextProvider";
+import { PostHogProvider } from "./providers";
 
 const lineSeedJp = LINE_Seed_JP({
     subsets: ["latin"],
@@ -45,9 +44,11 @@ export default function RootLayout({
             <body
                 className={`${lineSeedJp.variable} ${jetbrainsMono.variable} min-h-full flex flex-col`}
             >
-                <main className="flex flex-col h-dvh w-full items-center">
-                    {children}
-                </main>
+                <PostHogProvider>
+                    <main className="flex flex-col h-dvh w-full items-center">
+                        {children}
+                    </main>
+                </PostHogProvider>
             </body>
         </html>
     );
